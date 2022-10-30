@@ -8,5 +8,5 @@
 import Foundation
 
 struct StaticData {
-    static let apiKey = "Here is should be your APIKey from openweather"
+    static let apiKey = "Here should be your APIKey from openweather"
 }
