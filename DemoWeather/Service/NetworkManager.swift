@@ -9,8 +9,8 @@ import Foundation
 import Combine
 import CoreLocation
 
-class NetworkingManager: ObservableObject {
-    
+class NetworkManager: ObservableObject {
+    // Method to get current weather forecast with city name
     func getWeatherFromCity(cityName: String) -> AnyPublisher<WeatherModel, Error> {
         guard let url = URL(string: "https://api.openweathermap.org/data/2.5/weather?&appid=\(StaticData.apiKey)&units=metric&q=\(cityName)") else {
             fatalError("Bad URL")
@@ -26,7 +26,7 @@ class NetworkingManager: ObservableObject {
             .decode(type: WeatherModel.self, decoder: JSONDecoder())
             .eraseToAnyPublisher()
     }
-    
+    // Method to get current weather forecast with current user's location
     func getWeatherFromCoordinates(latitude: CLLocationDegrees, longitude: CLLocationDegrees) -> AnyPublisher<WeatherModel, Error> {
         guard let url = URL(string: "https://api.openweathermap.org/data/2.5/weather?lat=\(latitude)&lon=\(longitude)&appid=\(StaticData.apiKey)&units=metric") else {
                     fatalError("Bad URL")

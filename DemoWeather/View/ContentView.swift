@@ -13,7 +13,7 @@ struct ContentView: View {
     var body: some View {
         if vm.city == "No data" {
             WeatherView()
-                .redacted(reason: .placeholder)
+                .redacted(reason: .placeholder) // To get placeholdered View when we don't get data
         } else {
             WeatherView()
         }

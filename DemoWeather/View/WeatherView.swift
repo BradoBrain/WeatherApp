@@ -12,10 +12,12 @@ struct WeatherView: View {
     
     var body: some View {
         ZStack {
+            // Backgroud of View. In future will be changed with custom pics
             LinearGradient(colors: [.mint, .blue, .purple], startPoint: .topLeading, endPoint: .bottomTrailing).ignoresSafeArea()
             
             VStack {
                 HStack {
+                    // Button to get forecast in current location
                     Button {
                         vm.fetchWeatherFromCoordinates()
                     } label: {
@@ -29,7 +31,7 @@ struct WeatherView: View {
                         }
                     }
                     
-                    // Search field to change a city for getting current weather forecast
+                    // Search field to change a city for getting current weather forecast in this place
                     TextField("Search city", text: $vm.cityName)
                         .padding()
                         .background(.ultraThinMaterial)
@@ -38,19 +40,21 @@ struct WeatherView: View {
                         .frame(height: 55)
                         .keyboardType(.asciiCapable)
                         .onSubmit {
+                            // To get current forecast in choosen city
                             vm.fetchWeatherFromCity()
                             
                             vm.cityName = ""
                         }
                         .submitLabel(.search)
                     
+                    // To get current forecast in choosen city
                     Button {
-                        // Get current forecast with city
-                            vm.fetchWeatherFromCity()
-                            
-                            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-                            
-                            vm.cityName = ""
+                        vm.fetchWeatherFromCity()
+                        
+                        // To hide keyboard
+                        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                        
+                        vm.cityName = ""
                     } label: {
                         ZStack {
                             RoundedRectangle(cornerRadius: 15)
@@ -63,6 +67,7 @@ struct WeatherView: View {
                     }
                 } .unredacted()
                 
+                // Current weather forecast data
                 HStack {
                     Image(systemName: vm.iconName)
                     
@@ -98,7 +103,7 @@ struct WeatherView: View {
                 .cornerRadius(15)
                 
                 Spacer()
-        
+                
             }
             .padding()
             .foregroundColor(.white)

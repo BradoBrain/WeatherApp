@@ -13,7 +13,6 @@ class WeatherViewModel: ObservableObject {
     @Published var cityName = ""
     @Published var weatherData: WeatherModel?
     
-    
     var cancellables: Set<AnyCancellable> = []
     
     let locationManager = LocationManager()
@@ -53,8 +52,11 @@ class WeatherViewModel: ObservableObject {
     }
     
     // Methods to fetch Weather
+    
+    // with cityName
     func fetchWeatherFromCity() {
-        NetworkingManager().getWeatherFromCity(cityName: cityName.replacingOccurrences(of: " ", with: "+"))
+        // using .replacingOccurrences to get rid of whitespace into URL
+        NetworkManager().getWeatherFromCity(cityName: cityName.replacingOccurrences(of: " ", with: "+"))
             .receive(on: RunLoop.main)
             .sink { completion in
                 if case .failure(let error) = completion {
@@ -66,10 +68,11 @@ class WeatherViewModel: ObservableObject {
             .store(in: &cancellables)
     }
     
+    // with coordinates from locationManager
     func fetchWeatherFromCoordinates() {
         if let location = locationManager.location {
             
-            NetworkingManager().getWeatherFromCoordinates(latitude: location.latitude, longitude: location.longitude)
+        NetworkManager().getWeatherFromCoordinates(latitude: location.latitude, longitude: location.longitude)
                 .receive(on: RunLoop.main)
                 .sink { completion in
                     if case .failure(let error) = completion {
