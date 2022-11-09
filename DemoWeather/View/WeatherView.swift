@@ -1,26 +1,36 @@
-//
-//  WeatherView.swift
-//  DemoWeather
-//
-//  Created by Artem Vinogradov on 27.10.2022.
-//
+//  Created by Artem Vinogradov
 
 import SwiftUI
+
+/**
+ WeatherView is a place where main UI has built. It made for ContentView.
+ 
+ Here are description of UI section:
+ - Background section contains background pic.
+ - Search/User location section contains:
+ - UserCurrentLocation button to get current user location.
+ - SearchTextField to text city name for getting current forecast in this place.
+ - CustomCityNameForecast button to get forecast for city from SearchTextField.
+ - CurrentWeatherForcastData section contains:
+ - Current weather icon and temperature in ºC.
+ - Current city name.
+ - Current min/max temperatures, humidity level and speed of wind.
+ */
 
 struct WeatherView: View {
     @EnvironmentObject var vm: WeatherViewModel
     
     var body: some View {
         ZStack {
-            // Backgroud of View. In future will be changed with custom pics
+            //MARK: - Background section
             LinearGradient(colors: [.mint, .blue, .purple], startPoint: .topLeading, endPoint: .bottomTrailing).ignoresSafeArea()
             
             VStack {
+                
+                //MARK: - Search/User location section
                 HStack {
-                    // Button to get forecast in current location
-                    Button {
-                        vm.fetchWeatherFromCoordinates()
-                    } label: {
+                    /// UserCurrentLocation button
+                    Button { vm.locationManager.requestLocation() } label: {
                         ZStack {
                             RoundedRectangle(cornerRadius: 15)
                                 .foregroundStyle(.ultraThinMaterial)
@@ -31,7 +41,7 @@ struct WeatherView: View {
                         }
                     }
                     
-                    // Search field to change a city for getting current weather forecast in this place
+                    /// SearchTextField
                     TextField("Search city", text: $vm.cityName)
                         .padding()
                         .background(.ultraThinMaterial)
@@ -40,21 +50,16 @@ struct WeatherView: View {
                         .frame(height: 55)
                         .keyboardType(.asciiCapable)
                         .onSubmit {
-                            // To get current forecast in choosen city
-                            vm.fetchWeatherFromCity()
-                            
-                            vm.cityName = ""
+                            vm.fetchWeatherFromCity() // To get current forecast in choosen city
+                            vm.cityName = "" // Makes search field clear after keyboard return button was pressed
                         }
-                        .submitLabel(.search)
+                        .submitLabel(.search) // Change keyboard return button lable
                     
-                    // To get current forecast in choosen city
+                    /// CustomCityNameForecast
                     Button {
-                        vm.fetchWeatherFromCity()
-                        
-                        // To hide keyboard
-                        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-                        
-                        vm.cityName = ""
+                        vm.fetchWeatherFromCity() // To get current forecast for city from SearchTextField
+                        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil) // To hide keyboard
+                        vm.cityName = "" // Makes search field clear after keyboard return button was pressed
                     } label: {
                         ZStack {
                             RoundedRectangle(cornerRadius: 15)
@@ -65,9 +70,11 @@ struct WeatherView: View {
                                 .font(.title)
                         }
                     }
-                } .unredacted()
+                } .unredacted() // To make this section visible all time
                 
-                // Current weather forecast data
+                //MARK: - CurrentWeatherForcastData section
+                
+                /// Current weather icon and temperature in ºC
                 HStack {
                     Image(systemName: vm.iconName)
                     
@@ -76,10 +83,11 @@ struct WeatherView: View {
                 .bold()
                 .font(.system(size: 56))
                 
-                
+                /// Current city name
                 Text(vm.city)
                     .font(.largeTitle)
                 
+                /// Current min/max temperatures, humidity level and speed of wind
                 Grid(horizontalSpacing: 40, verticalSpacing: 40) {
                     GridRow {
                         Image(systemName: "thermometer.low")
@@ -103,7 +111,6 @@ struct WeatherView: View {
                 .cornerRadius(15)
                 
                 Spacer()
-                
             }
             .padding()
             .foregroundColor(.white)

@@ -1,12 +1,9 @@
-//
-//  StaticData.swift
-//  DemoWeather
-//
-//  Created by Artem Vinogradov on 27.10.2022.
-//
+//  Created by Artem Vinogradov
 
 import Foundation
 
+/// Place to store user API key
+
 struct StaticData {
-    static let apiKey = "Here should be your APIKey from openweather"
+    static let apiKey = "e34ddb0c9712b90931c36afb73c0459e"
 }

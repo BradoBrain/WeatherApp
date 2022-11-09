@@ -1,11 +1,15 @@
-//
-//  ContentView.swift
-//  DemoWeather
-//
-//  Created by Artem Vinogradov on 27.10.2022.
-//
+//  Created by Artem Vinogradov
 
 import SwiftUI
+
+/**
+ContentView supports two display options. Placeholdered View or View with data.
+ 
+ - If there is no data or it is failed the View show us placeholder. Another case we get the View with current weather data. It made with:
+ ```
+ .redacted(reason: .placeholder)
+ ```
+ */
 
 struct ContentView: View {
     @EnvironmentObject var vm: WeatherViewModel
@@ -13,7 +17,7 @@ struct ContentView: View {
     var body: some View {
         if vm.city == "No data" {
             WeatherView()
-                .redacted(reason: .placeholder) // To get placeholdered View when we don't get data
+                .redacted(reason: .placeholder)
         } else {
             WeatherView()
         }
